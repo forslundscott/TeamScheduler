@@ -1,20 +1,20 @@
 {
-  "name": "team_scheduler",
+  "name": "TeamScheduler",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/forslundscott/Test.git"
+    "url": "git+https://github.com/forslundscott/TeamScheduler.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/forslundscott/Test/issues"
+    "url": "https://github.com/forslundscott/TeamScheduler/issues"
   },
-  "homepage": "https://github.com/forslundscott/Test#readme"
+  "homepage": "https://github.com/forslundscott/TeamScheduler#readme"
 }
