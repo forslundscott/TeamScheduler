@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <% for(var i=0; i<data.length; i++) {%>
+        <% trimName = data[i].team_name.replace(/\s/g, "") %> 
+        <form id="<%= data[i].team_name.replace(/\s/g, "") %>" method="post" action="team">
+            <input type="hidden" name="name" value="<%= data[i].team_name %>">
+            <input type="hidden" name="tab" value="<%= tab %>">
+        </form>
+        <a onclick="<%= trimName %>.submit();" style="text-decoration: none;">
+            <div>
+                <h2 class="dayHeader">
+                    <img src="Soccerball.jpeg" alt="Temp Icon" width="50" height="50">
+                    <%= data[i].team_name %>
+                    
+                </h2>
+            </div>
+        </a>
+     <% } %>
+</body>
+</html>

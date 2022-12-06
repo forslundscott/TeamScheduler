@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <% for(var i=0; i<data.length; i++) {%>
+        <script>
+            console.log(<%= data[i]%>)
+        </script>
+        <% if (data[i].league == id) { %>            
+            <% trimName = data[i].team_name.replace(/[^a-zA-Z0-9]/g, '')%> 
+            <form id="<%= trimName %>" method="post" action="team">
+                <input type="hidden" name="name" value="<%= data[i].team_name %>">
+                <input type="hidden" name="id" value="<%= data[i].team %>">
+                <input type="hidden" name="tab" value="<%= tab %>">
+            </form>
+            
+            <a onclick="<%= trimName %>.submit();" style="text-decoration: none;">
+                <div>
+                    <h2 class="dayHeader">
+                        <%= data[i].team_name %>
+                    </h2>
+                </div>
+            </a>
+        <% } %>
+     <% } %>
+</body>
+</html>

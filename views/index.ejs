@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="events.json"></script>
+    <script src="main.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.png">
+    <title>TeamMate</title>
+</head>
+<body>      
+    
+      <script>
+          if(document.getElementById('nav' + <%- JSON.stringify(tab) %>)){
+              document.getElementById('nav' + <%- JSON.stringify(tab) %>).classList.add('active')
+            //   console.log(document.getElementsByClassName('active')[0].id.replace('nav', ''))
+          }
+          
+            
+      </script> 
+        <header class="header">
+            
+            <div style="display: inline-block;" id="pageName" class="headerText"><img src="Flower.jpg" alt="Temp Icon" width="50" height="50"><img src="Soccerball.jpeg" alt="Temp Icon" width="50" height="50"><img src="icon.png" alt="Temp Icon" width="50" height="50"><%= page %> </div>
+            <div style=" display: inline-block; float: right; padding-right: 2vw;"><img style=" display: inline-block; float: right; border-radius: 25%;" src="Scott Forslund.jpg" alt="Temp Icon" width="50" height="auto"></div>
+        </header>
+        <div id="innerBody">
+            <%- include('new_user') %> 
+            <%# include(title.toLowerCase(), {tab: tab}); %>
+        </div>
+      <div class="navbar">
+        <a href="events" id="navEvents">Events</a>
+        <a href="teams"  id="navTeams">Teams</a>
+        <a href="chat"  id="navChat">Chat</a>
+        <a href="leagues"  id="navLeagues">Leagues</a>
+        <a href="manage"  id="navManage">Manage</a>
+      </div>
+</body>
+</html>

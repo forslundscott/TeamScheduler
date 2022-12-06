@@ -1,0 +1,31 @@
+[
+    {
+        "name": "SZ Prime Time",
+        "facility": "Soccer Zone",
+        "color": "Blue",
+        "league": "Coed 27+ C"
+    },
+    {
+        "name": "Free Agents",
+        "facility": "Hope Sports Complex",
+        "color": "Red",
+        "league": "Coed 21+ Recreational"
+    },
+    {
+        "name": "Bees",
+        "facility": "Meridian Township Parks",
+        "color": "Yellow",
+        "league": "Kindergarten Girls"
+    },
+    {
+        "name": "Team Furious",
+        "date": "3/25/2022",
+        "time": "7:40PM",
+        "field": 2,
+        "home": "Yes",
+        "facility": "Soccer Zone",
+        "color": "Blue",
+        "league": "Coed 27+ C",
+        "opponent": "Win or Loze We Booze"
+    }
+]

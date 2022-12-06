@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <span style="display: inline-block; width: 50%; vertical-align: top;">
+        <% for(var i=0; i<data.length; i++) {%>
+            <% if (data[i].rsvp !== 'No Response') { %>    
+                <h2 class="dayHeader" style="width: 99%;">
+                    <img src= "<%= data[i].first_name + " " + data[i].last_name %>.jpg" onerror="this.src='person_not_found_male.jpg';" alt="Temp Icon" width="auto"  height="60">
+                    <%= data[i].first_name + ' ' + data[i].last_name + ' ' + data[i].rsvp %>
+                </h2>
+            <% } %>
+            
+        <% } %>
+    </span><span style="display: inline-block; width: 50%; vertical-align: top;">
+        <% for(var i=0; i<data.length; i++) {%>
+            <% if (data[i].rsvp == 'No Response') { %> 
+                <h2 class="dayHeader" style="width: 99%;">
+                    <img src= "<%= data[i].first_name + " " + data[i].last_name %>.jpg" onerror="this.src='person_not_found_male.jpg';" alt="Temp Icon" width="auto"  height="60">
+                    <%= data[i].first_name + ' ' + data[i].last_name + ' ' + data[i].rsvp %>
+                </h2>
+            <% } %>
+        <% } %>
+    </span>
+</body>
+</html>
