@@ -71,17 +71,41 @@ app.get('/manage', async (req,res)=>{
         page : 'Manage'
     })
 })
+app.get('/new_user', async (req,res)=>{
+    // var connection = getAccess()
+    // var data = await connection.query('SELECT * FROM [organizations]')
+    // var data = require('./public/teams.json')
+    res.render('index.ejs',{ data : data,
+        tab : 'Manage',
+        title : 'new_user',
+        page : 'New User'
+    })
+})
 app.post('/useradd', async (req,res)=>{
     var connection = getAccess()
     // console.log(req.body.game_id)
     var data = await connection.query('SELECT * FROM [users] as u where u.email = ' + JSON.stringify(req.body.email))
     if(data.length === 1){
-        
+        // Update user data based on email address
         await connection.execute('Update users Set nickname = ' + JSON.stringify(req.body.nickname) + ' Where email = ' + JSON.stringify(req.body.email))
         res.end('User Updated!')
     }else {
-        console.log(JSON.stringify(req.body))
-        console.log(JSON.stringify(req.body.email))
+        // Add New User
+        var titlestr = ''
+        var tempdata = JSON.stringify(req.body)
+        // console.log('INSERT INTO users (' + Object.keys(req.body) + ')')
+        // console.log('VALUES (' + JSON.stringify(Object.values(req.body)).replace(/[\[\]']+/g,'') + ')')
+        // console.log('INSERT INTO users (' + Object.keys(req.body) + ') VALUES (' + JSON.stringify(Object.values(req.body)).replace(/[\[\]']+/g,'') + ')')
+        await connection.execute('INSERT INTO users (' + Object.keys(req.body) + ') VALUES (' + JSON.stringify(Object.values(req.body)).replace(/[\[\]']+/g,'') + ')')
+        // for (const tempi of req.body) {
+        //     console.log(tempi)
+        // }
+        // for (let i = 0; i < tempdata.length - 1; i++){
+        //     titlestr += req.body[i]
+        //     console.log(tempdata.length)
+        // }
+        // console.log(JSON.stringify(req.body))
+        // console.log(JSON.stringify(req.body.email))
         res.end('User Added')
     }
     // console.log(data.length)
