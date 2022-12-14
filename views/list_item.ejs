@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+            <% trimName = data[i][listTitle].replace(/[^a-zA-Z0-9]/g, '')%> 
+            <%# console.log(data[i][listChildId]) %> 
+            <%# console.log(listChildId) %> 
+            <form id="<%= trimName %>" method="post" action="<%= listAction %>">
+                <input type="hidden" name="name" value="<%= data[i][listTitle] %>">
+                <input type="hidden" name="id" value="<%= data[i][listChildId] %>">
+                <input type="hidden" name="tab" value="<%= tab %>">
+            </form>
+            <a onclick="<%= trimName %>.submit();" style="text-decoration: none;">
+                <div>
+                    <h2 class="dayHeader">
+                        <img src="Soccerball.jpeg" alt="Temp Icon" width="50" height="50">
+                        <%= data[i][listTitle] %>                    
+                    </h2>
+                </div>
+            </a>
+</body>
+</html>

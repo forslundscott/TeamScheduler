@@ -67,8 +67,11 @@ app.get('/manage', async (req,res)=>{
     // var data = require('./public/teams.json')
     res.render('index.ejs',{ data : data,
         tab : 'Manage',
-        title : 'Manage',
-        page : 'Manage'
+        title : 'List',
+        page : 'Manage',
+        listTitle : 'organization_name',
+        listAction : 'organization',
+        listChildId : 'id'
     })
 })
 app.get('/new_user', async (req,res)=>{
@@ -160,35 +163,49 @@ app.get('/team', (req,res)=>{
 
 app.post('/team', async (req,res)=>{
     var connection = getAccess()
-    var data = await connection.query('SELECT * from user_role_team as urt left outer join users as u on urt.user=u.id')
+    var data = await connection.query('SELECT urt.*, email, first_name, last_name, nickname, dob, gender from user_role_team as urt left outer join users as u on urt.user=u.id')
+    // console.log(data[data.length - 1])
     res.render('index.ejs',{ data : data,
         tab : req.body.tab,
-        title : 'Team',
+        title : 'List',
         id : req.body.id,
-        page : req.body.name
+        page : req.body.name,
+        listTitle : 'last_name',
+        listAction : 'user',
+        listId : 'team',
+        listChildId : 'user'
     })
 })
 app.post('/organization', async (req,res)=>{
 
     var connection = getAccess()
     var data = await connection.query('SELECT * FROM [leagues]')
-    console.log(req.body.id)
+    // console.log(req.body.id)
     res.render('index.ejs',{ data : data,
         tab : req.body.tab,
-        title : 'Organization',
+        title : 'List',
         id : req.body.id,
-        page : req.body.name
+        page : req.body.name,
+        listTitle : 'league_name',
+        listAction : 'league',
+        listId : 'organization',
+        listChildId : 'id'
     })
 })
 app.post('/league', async (req,res)=>{
     // var data = require('./public/players.json')
     var connection = getAccess()
-    var data = await connection.query('SELECT * from league_team as lt inner join teams as t on lt.team=t.id')
+    var data = await connection.query('SELECT lt.id as id, team, team_name, league, [session] from league_team as lt inner join teams as t on lt.team=t.id')
+    // console.log(data)
     res.render('index.ejs',{ data : data,
         tab : req.body.tab,
-        title : 'League',
+        title : 'List',
         id : req.body.id,
-        page : req.body.name
+        page : req.body.name,
+        listTitle : 'team_name',
+        listAction : 'team',
+        listId : 'league',
+        listChildId : 'team'
     })
 })
 app.listen(port, function(err){

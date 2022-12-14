@@ -4,7 +4,7 @@
 </head>
 <body>
     <% for(var i=0; i<data.length; i++) {%>
-        <% if (data[i].organization == id) { %>            
+        <% if (data[i][listId] == id) { %>            
             <% trimName = data[i].league_name.replace(/[^a-zA-Z0-9]/g, '')%> 
             <form id="<%= trimName %>" method="post" action="league">
                 <input type="hidden" name="name" value="<%= data[i].league_name %>">
