@@ -57,8 +57,11 @@ app.get('/teams', async (req,res)=>{
     // var data = require('./public/teams.json')
     res.render('index.ejs',{ data : data,
         tab : 'Teams',
-        title : 'Teams',
-        page : 'Teams'
+        title : 'List',
+        page : 'Teams',
+        listTitle : 'team_name',
+        listAction : 'team',
+        listChildId : 'id'
     })
 })
 app.get('/manage', async (req,res)=>{
@@ -147,8 +150,11 @@ app.get('/leagues', async (req,res)=>{
     // var data = require('./public/leagues.json')
     res.render('index.ejs',{ data : data,
         tab : 'Leagues',
-        title : 'Leagues',
-        page : 'Leagues'
+        title : 'List',
+        page : 'Leagues',
+        listTitle : 'league_name',
+        listAction : 'league',
+        listChildId : 'id'
     })
     
 })

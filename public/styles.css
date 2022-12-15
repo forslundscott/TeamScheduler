@@ -1,9 +1,16 @@
 :root {
-  --primeColor: #009688
+  --primeColor: #009688;
+  --scrollWidth: 15px
 }
-
+html {
+  width: calc(100% - var(--scrollWidth));
+  /* width: 100%; */
+  margin: 0%;
+}
 body {
-    margin: 0;
+    margin: 0%;
+    /* width: 100%; */
+    /* width: calc(100% - var(--scrollWidth)); */
     font-family: Arial, Helvetica, sans-serif;
   }
   
@@ -55,7 +62,7 @@ body {
     top: 0;
     padding: 1vh 1vw;
     /* position: fixed; */
-    width: 100%;
+    width: calc(100% - 1vw);
     z-index: 1;
     overflow: hidden;
     display: block;
@@ -63,9 +70,9 @@ body {
   #innerBody {
     /* padding-left: 1vw; */
     padding-right: 1vw;
-    height: 75vh;
+    height: 79.5vh;
     width: 100%;
-    overflow: hidden;
+    overflow: auto;
   }
   .dayHeader {
     background-color: #62b4a8;
