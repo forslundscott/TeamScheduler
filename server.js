@@ -177,7 +177,6 @@ app.post('/organization', async (req,res)=>{
     })
 })
 app.post('/league', async (req,res)=>{
-    // var data = require('./public/players.json')
     var connection = getAccess()
     var data = await connection.query('SELECT lt.id as id, team, team_name, league, [session] from league_team as lt inner join teams as t on lt.team=t.id')
     
