@@ -11,33 +11,13 @@ let options = {
 function getAccess(){
     var ADODB = require('node-adodb');
     ADODB.debug = true;
-
     // Connect to the MS Access DB
     var connection = ADODB.open('Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Users\\x002970\\Documents\\TeamMateDB.accdb;Persist Security Info=False;');
-    return connection
-    // Query the DB
-    // const testvar = JSON.stringify(await connection.query('SELECT * FROM [game_data];'))
-    // console.log(testvar)
-        // .then(data => {
-        //     console.log(data);
-        // })
-        
+    return connection        
 }
-
-
-var data = require('./public/teams.json')
 app.use(express.static('public',options))
 app.set('view-engine','ejs')
-app.get('/', (req,res)=>{
-    // getSQL(req,res)
-    
-    res.render('index.ejs',{ data : data,
-        tab : 'Games',
-        title : 'Games',
-        page : 'Games'
-    })
-})
-app.get('/games', async (req,res)=>{
+app.get(['/games','/'], async (req,res)=>{
     // getSQL(req,res)
     var connection = getAccess()
     var data = await connection.query('SELECT * FROM [game_data]')
@@ -55,7 +35,6 @@ app.get('/games', async (req,res)=>{
 app.get('/teams', async (req,res)=>{
     var connection = getAccess()
     var data = await connection.query('SELECT * FROM [teams]')
-    // var data = require('./public/teams.json')
     res.render('index.ejs',{ data : data,
         tab : 'Teams',
         title : 'List',
@@ -68,7 +47,6 @@ app.get('/teams', async (req,res)=>{
 app.get('/organizations', async (req,res)=>{
     var connection = getAccess()
     var data = await connection.query('SELECT * FROM [organizations]')
-    // var data = require('./public/teams.json')
     res.render('index.ejs',{ data : data,
         tab : 'Organizations',
         title : 'List',
@@ -79,9 +57,6 @@ app.get('/organizations', async (req,res)=>{
     })
 })
 app.get('/new_user', async (req,res)=>{
-    // var connection = getAccess()
-    // var data = await connection.query('SELECT * FROM [organizations]')
-    // var data = require('./public/teams.json')
     res.render('index.ejs',{ data : data,
         tab : 'Teams',
         title : 'new_user',
@@ -125,8 +100,6 @@ app.post('/game', async (req,res)=>{
 app.get('/leagues', async (req,res)=>{
     var connection = getAccess()
     var data = await connection.query('SELECT * FROM [leagues]')
-    
-    // var data = require('./public/leagues.json')
     res.render('index.ejs',{ data : data,
         tab : 'Leagues',
         title : 'List',
@@ -137,14 +110,7 @@ app.get('/leagues', async (req,res)=>{
     })
     
 })
-app.get('/team', (req,res)=>{
-    var data = require('./public/players.json')
-    res.render('index.ejs',{ data : data,
-        tab : 'Team',
-        title : 'Team',
-        page : 'Team'
-    })
-})
+
 
 app.post('/team', async (req,res)=>{
     var connection = getAccess()
