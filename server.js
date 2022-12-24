@@ -122,15 +122,6 @@ app.post('/game', async (req,res)=>{
         listChildId : 'user'
     })
 })
-app.get('/chat', (req,res)=>{
-    var data = require('./public/chat.json')
-    res.render('index.ejs',{ data : data,
-        tab : 'Chat',
-        title : 'Chat',
-        page : 'Chat'
-    })
-    
-})
 app.get('/leagues', async (req,res)=>{
     var connection = getAccess()
     var data = await connection.query('SELECT * FROM [leagues]')
