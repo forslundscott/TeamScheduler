@@ -3,10 +3,9 @@
 <head>
 </head>
 <body>
-            <% console.log(data[i]) %> 
+            
             <% trimName = data[i][listTitle].replace(/[^a-zA-Z0-9]/g, '')%> 
-            <%# console.log(data[i][listChildId]) %> 
-            <%# console.log(listChildId) %> 
+
             <form id="<%= trimName %>" method="post" action="<%= listAction %>">
                 <input type="hidden" name="name" value="<%= data[i][listTitle] %>">
                 <input type="hidden" name="id" value="<%= data[i][listChildId] %>">

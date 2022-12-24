@@ -24,30 +24,31 @@ function getAccess(){
         
 }
 
-var data = require('./public/events.json')
+
 var data = require('./public/teams.json')
-// app.locals.events = events
 app.use(express.static('public',options))
 app.set('view-engine','ejs')
-// var data = require('./public/events.json')
 app.get('/', (req,res)=>{
     // getSQL(req,res)
     
     res.render('index.ejs',{ data : data,
-        tab : 'Events',
-        title : 'Events',
-        page : 'Events'
+        tab : 'Games',
+        title : 'Games',
+        page : 'Games'
     })
 })
-app.get('/events', async (req,res)=>{
+app.get('/games', async (req,res)=>{
     // getSQL(req,res)
     var connection = getAccess()
     var data = await connection.query('SELECT * FROM [game_data]')
-    // var data = require('./public/events.json')
+
     res.render('index.ejs',{ data : data,
-        tab : 'Events',
-        title : 'Events',
-        page : 'Events'
+        tab : 'Games',
+        title : 'List',
+        page : 'Games',
+        listTitle : 'game_name',
+        listAction : 'game',
+        listChildId : 'game_id'
     })
     
 })
@@ -64,14 +65,14 @@ app.get('/teams', async (req,res)=>{
         listChildId : 'id'
     })
 })
-app.get('/manage', async (req,res)=>{
+app.get('/organizations', async (req,res)=>{
     var connection = getAccess()
     var data = await connection.query('SELECT * FROM [organizations]')
     // var data = require('./public/teams.json')
     res.render('index.ejs',{ data : data,
-        tab : 'Manage',
+        tab : 'Organizations',
         title : 'List',
-        page : 'Manage',
+        page : 'Organizations',
         listTitle : 'organization_name',
         listAction : 'organization',
         listChildId : 'id'
@@ -82,14 +83,14 @@ app.get('/new_user', async (req,res)=>{
     // var data = await connection.query('SELECT * FROM [organizations]')
     // var data = require('./public/teams.json')
     res.render('index.ejs',{ data : data,
-        tab : 'Manage',
+        tab : 'Teams',
         title : 'new_user',
         page : 'New User'
     })
 })
 app.post('/useradd', async (req,res)=>{
     var connection = getAccess()
-    // console.log(req.body.game_id)
+    
     var data = await connection.query('SELECT * FROM [users] as u where u.email = ' + JSON.stringify(req.body.email))
     if(data.length === 1){
         // Update user data based on email address
@@ -99,39 +100,26 @@ app.post('/useradd', async (req,res)=>{
         // Add New User
         var titlestr = ''
         var tempdata = JSON.stringify(req.body)
-        // console.log('INSERT INTO users (' + Object.keys(req.body) + ')')
-        // console.log('VALUES (' + JSON.stringify(Object.values(req.body)).replace(/[\[\]']+/g,'') + ')')
-        // console.log('INSERT INTO users (' + Object.keys(req.body) + ') VALUES (' + JSON.stringify(Object.values(req.body)).replace(/[\[\]']+/g,'') + ')')
+        
         await connection.execute('INSERT INTO users (' + Object.keys(req.body) + ') VALUES (' + JSON.stringify(Object.values(req.body)).replace(/[\[\]']+/g,'') + ')')
-        // for (const tempi of req.body) {
-        //     console.log(tempi)
-        // }
-        // for (let i = 0; i < tempdata.length - 1; i++){
-        //     titlestr += req.body[i]
-        //     console.log(tempdata.length)
-        // }
-        // console.log(JSON.stringify(req.body))
-        // console.log(JSON.stringify(req.body.email))
+        
         res.end('User Added')
     }
-    // console.log(data.length)
-    // window.alert()
     
-    // res.render('index.ejs',{ data : data,
-    //     tab : 'Game',
-    //     title : 'Game',
-    //     page : 'Game: ' + req.body.game_id + ' ' + req.body.home + ' vs ' + req.body.away
-    // })
 })
 app.post('/game', async (req,res)=>{
     var connection = getAccess()
-    console.log(req.body.game_id)
-    var data = await connection.query('SELECT * FROM [rsvp_query] as rq where rq.game = ' + req.body.game_id)
-    console.log(data)
+    var data = await connection.query('SELECT * FROM [rsvp_query]')
+    console.log(req.body)
     res.render('index.ejs',{ data : data,
-        tab : 'Game',
-        title : 'Game',
-        page : 'Game: ' + req.body.game_id + ' ' + req.body.home + ' vs ' + req.body.away
+        tab : req.body.tab,
+        title : 'List',
+        id : req.body.id,
+        page : req.body.name,
+        listTitle : 'first_name',
+        listAction : 'user',
+        listId : 'game',
+        listChildId : 'user'
     })
 })
 app.get('/chat', (req,res)=>{
@@ -170,7 +158,6 @@ app.get('/team', (req,res)=>{
 app.post('/team', async (req,res)=>{
     var connection = getAccess()
     var data = await connection.query('SELECT urt.*, email, first_name, last_name, nickname, dob, gender from user_role_team as urt left outer join users as u on urt.user=u.id')
-    // console.log(data[data.length - 1])
     res.render('index.ejs',{ data : data,
         tab : req.body.tab,
         title : 'List',
@@ -186,7 +173,7 @@ app.post('/organization', async (req,res)=>{
 
     var connection = getAccess()
     var data = await connection.query('SELECT * FROM [leagues]')
-    // console.log(req.body.id)
+    
     res.render('index.ejs',{ data : data,
         tab : req.body.tab,
         title : 'List',
@@ -202,7 +189,7 @@ app.post('/league', async (req,res)=>{
     // var data = require('./public/players.json')
     var connection = getAccess()
     var data = await connection.query('SELECT lt.id as id, team, team_name, league, [session] from league_team as lt inner join teams as t on lt.team=t.id')
-    // console.log(data)
+    
     res.render('index.ejs',{ data : data,
         tab : req.body.tab,
         title : 'List',
@@ -215,8 +202,7 @@ app.post('/league', async (req,res)=>{
     })
 })
 app.listen(port, function(err){
-    if (err) console.log(err);
-    // console.log("Server listening on PORT", port);
+    // if (err) console.log(err);
  })
  function getSQL(req,res){
     var sql = require("mssql");
@@ -234,7 +220,7 @@ app.listen(port, function(err){
     // connect to your database
     sql.connect(config, function (err) {
     
-        if (err) console.log(err);
+        // if (err) console.log(err);
 
         // create Request object
         var request = new sql.Request();
@@ -242,7 +228,7 @@ app.listen(port, function(err){
         // query to the database and get the records
         request.query('select top 1 * from Users', function (err, recordset) {
             
-            if (err) console.log(err)
+            // if (err) console.log(err)
 
             // send records as a response
             console.log(recordset)

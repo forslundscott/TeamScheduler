@@ -5,8 +5,10 @@
 <body>
     
     <% for(var i=0; i<data.length; i++) {%>
-        <% console.log(data[i]) %> 
+
+        
         <% if (typeof listId !== 'undefined'){ %> 
+
             <% if (data[i][listId] == id){ %>
                 <%- include('list_item', {tab: tab, i: i, data: data, listAction: listAction, listTitle: listTitle, listChildId: listChildId}); %>
             <% } %> 

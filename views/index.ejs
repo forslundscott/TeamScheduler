@@ -24,16 +24,15 @@
             <%- include(title.toLowerCase(), {tab: tab}); %>
         </div>
       <div class="navbar">
-        <a href="events" id="navEvents">Events</a>
+        <a href="games" id="navGames">Games</a>
         <a href="teams"  id="navTeams">Teams</a>
         <a href="chat"  id="navChat">Chat</a>
         <a href="leagues"  id="navLeagues">Leagues</a>
-        <a href="manage"  id="navManage">Manage</a>
+        <a href="Organizations"  id="navOrganizations">Organizations</a>
       </div>
       <script>
           if(document.getElementById('nav' + <%- JSON.stringify(tab) %>)){
               document.getElementById('nav' + <%- JSON.stringify(tab) %>).classList.add('active')
-              // console.log(document.getElementsByClassName('active')[0].id.replace('nav', ''))
           }   
       </script> 
 </body>
