@@ -2,12 +2,86 @@ const express = require("express")
 const app = express()
 const port = 3000
 const genRouter = require('./routes/general')
+let options = {}
 app.use('/general',genRouter)
 app.use(express.urlencoded({ extended: true }))
-let options = {
-    
-}
+app.use(express.static('public',options))
+app.set('view-engine','ejs')
 
+function titleCase(xstr){
+    return xstr.charAt(0).toUpperCase() + xstr.slice(1)
+}
+async function pageResponse(req,res,next){
+    var connection = getAccess()
+    console.log(req.url)
+    if(req.url == '/'){
+        req.url = '/games'
+    }
+    var tempObj = {
+        title : 'List',
+        listChildId : 'id'
+    }
+    switch(req.route.stack[0].method){
+        case 'get':
+            tempObj.tab = titleCase(req.url.replace(/\//g, ''))
+            tempObj.page = tempObj.tab
+            break;
+        default:
+            tempObj.tab = req.body.tab
+            tempObj.page = req.body.name,
+            tempObj.id = req.body.id
+    }
+    switch(req.url){
+        case '/teams':
+            tempObj.listTitle = 'team_name'
+            tempObj.listAction = 'team'
+            tempObj.data = await connection.query('SELECT * FROM [teams]')
+            break;
+        case '/organizations':
+            tempObj.listTitle = 'organization_name',
+            tempObj.listAction = 'organization'
+            tempObj.data = await connection.query('SELECT * FROM [organizations]')
+            break;
+        case '/leagues' :
+            tempObj.listTitle = 'league_name',
+            tempObj.listAction = 'league'
+            tempObj.data = await connection.query('SELECT * FROM [leagues]')
+            break;
+        case '/games' :
+            tempObj.listTitle = 'game_name',
+            tempObj.listAction = 'game'
+            tempObj.data = await connection.query('SELECT * FROM [game_data]')
+            break;
+        case '/game' :
+            tempObj.listTitle = 'first_name',
+            tempObj.listAction = 'user',
+            tempObj.listId = 'game',
+            tempObj.listChildId = 'user'
+            tempObj.data = await connection.query('SELECT * FROM [rsvp_query]')
+            break;
+        case '/team' :
+            tempObj.listTitle = 'first_name',
+            tempObj.listAction = 'user',
+            tempObj.listId = 'team',
+            tempObj.listChildId = 'user'
+            tempObj.data = await connection.query('SELECT urt.*, email, first_name, last_name, nickname, dob, gender from user_role_team as urt left outer join users as u on urt.user=u.id')
+            break;
+        case '/organization' :
+            tempObj.listTitle = 'league_name',
+            tempObj.listAction = 'league',
+            tempObj.listId = 'organization'
+            tempObj.data = await connection.query('SELECT * FROM [leagues]')
+            break;
+        case '/league' :
+            tempObj.listTitle = 'team_name',
+            tempObj.listAction = 'team',
+            tempObj.listId = 'league',
+            tempObj.listChildId = 'team'
+            tempObj.data = await connection.query('SELECT lt.id as id, team, team_name, league, [session] from league_team as lt inner join teams as t on lt.team=t.id')
+            break;        
+    }
+    res.render('index.ejs',tempObj)
+}
 function getAccess(){
     var ADODB = require('node-adodb');
     ADODB.debug = true;
@@ -15,46 +89,11 @@ function getAccess(){
     var connection = ADODB.open('Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Users\\x002970\\Documents\\TeamMateDB.accdb;Persist Security Info=False;');
     return connection        
 }
-app.use(express.static('public',options))
-app.set('view-engine','ejs')
-app.get(['/games','/'], async (req,res)=>{
-    // getSQL(req,res)
-    var connection = getAccess()
-    var data = await connection.query('SELECT * FROM [game_data]')
-
-    res.render('index.ejs',{ data : data,
-        tab : 'Games',
-        title : 'List',
-        page : 'Games',
-        listTitle : 'game_name',
-        listAction : 'game',
-        listChildId : 'game_id'
-    })
-    
+app.get(['/games','/','/teams','/organizations','/leagues'], async (req,res)=>{
+    pageResponse(req,res)    
 })
-app.get('/teams', async (req,res)=>{
-    var connection = getAccess()
-    var data = await connection.query('SELECT * FROM [teams]')
-    res.render('index.ejs',{ data : data,
-        tab : 'Teams',
-        title : 'List',
-        page : 'Teams',
-        listTitle : 'team_name',
-        listAction : 'team',
-        listChildId : 'id'
-    })
-})
-app.get('/organizations', async (req,res)=>{
-    var connection = getAccess()
-    var data = await connection.query('SELECT * FROM [organizations]')
-    res.render('index.ejs',{ data : data,
-        tab : 'Organizations',
-        title : 'List',
-        page : 'Organizations',
-        listTitle : 'organization_name',
-        listAction : 'organization',
-        listChildId : 'id'
-    })
+app.post(['/game','/team','/organization','/league'], async (req,res)=>{
+    pageResponse(req,res)
 })
 app.get('/new_user', async (req,res)=>{
     res.render('index.ejs',{ data : data,
@@ -65,7 +104,6 @@ app.get('/new_user', async (req,res)=>{
 })
 app.post('/useradd', async (req,res)=>{
     var connection = getAccess()
-    
     var data = await connection.query('SELECT * FROM [users] as u where u.email = ' + JSON.stringify(req.body.email))
     if(data.length === 1){
         // Update user data based on email address
@@ -73,123 +111,10 @@ app.post('/useradd', async (req,res)=>{
         res.end('User Updated!')
     }else {
         // Add New User
-        var titlestr = ''
-        var tempdata = JSON.stringify(req.body)
-        
         await connection.execute('INSERT INTO users (' + Object.keys(req.body) + ') VALUES (' + JSON.stringify(Object.values(req.body)).replace(/[\[\]']+/g,'') + ')')
-        
         res.end('User Added')
-    }
-    
-})
-app.post('/game', async (req,res)=>{
-    var connection = getAccess()
-    var data = await connection.query('SELECT * FROM [rsvp_query]')
-    console.log(req.body)
-    res.render('index.ejs',{ data : data,
-        tab : req.body.tab,
-        title : 'List',
-        id : req.body.id,
-        page : req.body.name,
-        listTitle : 'first_name',
-        listAction : 'user',
-        listId : 'game',
-        listChildId : 'user'
-    })
-})
-app.get('/leagues', async (req,res)=>{
-    var connection = getAccess()
-    var data = await connection.query('SELECT * FROM [leagues]')
-    res.render('index.ejs',{ data : data,
-        tab : 'Leagues',
-        title : 'List',
-        page : 'Leagues',
-        listTitle : 'league_name',
-        listAction : 'league',
-        listChildId : 'id'
-    })
-    
-})
-
-
-app.post('/team', async (req,res)=>{
-    var connection = getAccess()
-    var data = await connection.query('SELECT urt.*, email, first_name, last_name, nickname, dob, gender from user_role_team as urt left outer join users as u on urt.user=u.id')
-    res.render('index.ejs',{ data : data,
-        tab : req.body.tab,
-        title : 'List',
-        id : req.body.id,
-        page : req.body.name,
-        listTitle : 'last_name',
-        listAction : 'user',
-        listId : 'team',
-        listChildId : 'user'
-    })
-})
-app.post('/organization', async (req,res)=>{
-
-    var connection = getAccess()
-    var data = await connection.query('SELECT * FROM [leagues]')
-    
-    res.render('index.ejs',{ data : data,
-        tab : req.body.tab,
-        title : 'List',
-        id : req.body.id,
-        page : req.body.name,
-        listTitle : 'league_name',
-        listAction : 'league',
-        listId : 'organization',
-        listChildId : 'id'
-    })
-})
-app.post('/league', async (req,res)=>{
-    var connection = getAccess()
-    var data = await connection.query('SELECT lt.id as id, team, team_name, league, [session] from league_team as lt inner join teams as t on lt.team=t.id')
-    
-    res.render('index.ejs',{ data : data,
-        tab : req.body.tab,
-        title : 'List',
-        id : req.body.id,
-        page : req.body.name,
-        listTitle : 'team_name',
-        listAction : 'team',
-        listId : 'league',
-        listChildId : 'team'
-    })
+    } 
 })
 app.listen(port, function(err){
     // if (err) console.log(err);
  })
- function getSQL(req,res){
-    var sql = require("mssql");
-
-    // config for your database
-    var config = {
-        user: 'PWUS\X002970',
-        // password: '',
-        server: 'AI978217', 
-        // dialect: 'mssql',
-        port: 1433,
-        database: 'TeamMateDB' 
-    };
-
-    // connect to your database
-    sql.connect(config, function (err) {
-    
-        // if (err) console.log(err);
-
-        // create Request object
-        var request = new sql.Request();
-           
-        // query to the database and get the records
-        request.query('select top 1 * from Users', function (err, recordset) {
-            
-            // if (err) console.log(err)
-
-            // send records as a response
-            console.log(recordset)
-            res.send(recordset);
-            
-        });
-    });
-}
