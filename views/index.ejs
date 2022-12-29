@@ -1,32 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="main.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="favicon.png">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="icon" href="/favicon.png">
     <title>TeamMate</title>
 </head>
 <body>      
-    
-      
         <header class="header">
             
-            <div style="display: inline-block;" id="pageName" class="headerText"><img src="Flower.jpg" alt="Temp Icon" width="50" height="50"><img src="Soccerball.jpeg" alt="Temp Icon" width="50" height="50"><img src="icon.png" alt="Temp Icon" width="50" height="50"><%= page %> </div>
-            <div style=" display: inline-block; float: right; padding-right: 2vw;"><img style=" display: inline-block; float: right; border-radius: 25%;" src="Scott Forslund.jpg" alt="Temp Icon" width="50" height="auto"></div>
-            <button onclick="location.href = 'new_user'" style="float: right;">Add User</button>
+            <div style="display: inline-block;" id="pageName" class="headerText"><img src="/Flower.jpg" alt="Temp Icon" width="50" height="50"><img src="/Soccerball.jpeg" alt="Temp Icon" width="50" height="50"><img src="/icon.png" alt="Temp Icon" width="50" height="50"><%= page %> </div>
+            <div style=" display: inline-block; float: right; padding-right: 2vw;"><img style=" display: inline-block; float: right; border-radius: 25%;" src="/Scott Forslund.jpg" alt="Temp Icon" width="50" height="auto"></div>
+            <button onclick="location.href = '/forms/form'" style="float: right;">Add User</button>
           </header>
         <div id="innerBody">
             <%# include('new_user') %> 
             <%- include(title.toLowerCase(), {tab: tab}); %>
         </div>
       <div class="navbar">
-        <a href="games" id="navGames">Games</a>
-        <a href="teams"  id="navTeams">Teams</a>
-        <a href="leagues"  id="navLeagues">Leagues</a>
-        <a href="organizations"  id="navOrganizations">Organizations</a>
+        <a href="../games" id="navGames">Games</a>
+        <a href="../teams"  id="navTeams">Teams</a>
+        <a href="../leagues"  id="navLeagues">Leagues</a>
+        <a href="../organizations"  id="navOrganizations">Organizations</a>
       </div>
       <script>
           if(document.getElementById('nav' + <%- JSON.stringify(tab) %>)){

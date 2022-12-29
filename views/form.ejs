@@ -3,38 +3,15 @@
 <head>
 </head>
 <body>
-    <div class="form-popup" id="andonForm" style="display: block;">
+    <div class="form-popup" id="addItem" style="display: block;">
         <form action="useradd" class="form-container" method="POST" autocomplete="off">
           <h1>New User</h1>
-          <label for="first_name"><b>First Name:</b></label>
-          <br>
-          <input type="text" placeholder="First Name" name="first_name" required="">
-          <br>
-          <label for="last_name"><b>Last Name:</b></label>
-          <br>
-          <input type="text" placeholder="Last Name" name="last_name" required="">
-          <br>
-          <label for="email"><b>Email:</b></label>
-          <br>
-          <input type="email" placeholder="Email" name="email" required="">
-          <br>
-          <label for="nickname"><b>Nick Name:</b></label>
-          <br>
-          <input type="text" placeholder="Nick Name" name="nickname" required="">
-          <br>
-          <label for="dob"><b>Date of Birth:</b></label>
-          <br>
-          <input type="date" placeholder="Date of Birth" name="dob" required="">
-          <br>
-          <label for="gender"><b>Gender:</b></label>
-          <br>
-          <select placeholder="Gender" name="gender" id="" required>
-            <option value="">Select Gender</option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-          </select>
-          <br>
-
+          <% for(var i=0; i<data.length; i++) {%>
+            <label for="<%= data[i]  %> "><b><%= data[i]  %></b></label>
+            <br>
+            <input type="text" placeholder="<%= data[i]  %>" name="<%= data[i]  %>" required="">
+            <br>
+          <% } %>    
           <button type="submit" class="btn">Submit</button>
           <button type="button" class="btn cancel" >Cancel</button>
         </form>
