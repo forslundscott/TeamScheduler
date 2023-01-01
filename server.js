@@ -55,6 +55,11 @@ async function pageResponse(req,res,next){
             tempObj.listAction = 'game'
             tempObj.data = await connection.query('SELECT * FROM [game_data]')
             break;
+        case '/users' :
+            tempObj.listTitle = 'first_name',
+            tempObj.listAction = 'user'
+            tempObj.data = await connection.query('SELECT * FROM [users]')
+            break;
         case '/game' :
             tempObj.listTitle = 'first_name',
             tempObj.listAction = 'user',
@@ -85,7 +90,7 @@ async function pageResponse(req,res,next){
     }
     res.render('index.ejs',tempObj)
 }
-app.get(['/games','/','/teams','/organizations','/leagues'], async (req,res)=>{
+app.get(['/games','/','/teams','/organizations','/leagues','/users'], async (req,res)=>{
     pageResponse(req,res)    
 })
 app.post(['/game','/team','/organization','/league'], async (req,res)=>{
