@@ -4,13 +4,18 @@
 </head>
 <body>
     <div class="form-popup" id="addItem" style="display: block;">
-        <form action="useradd" class="form-container" method="POST" autocomplete="off">
-          <h1>New User</h1>
+        <form action="/forms/add" class="form-container" method="POST" autocomplete="off">
           <% for(var i=0; i<data.length; i++) {%>
-            <label for="<%= data[i]  %> "><b><%= data[i]  %></b></label>
+            <% if(data[i] !== 'id'){ %> 
+            <script> 
+              var formData = <%= functions.labelFinder(data[i]) %> 
+            </script>
+            
+            <label for="<%= data[i]  %>"><b><%= formData.label  %></b></label>
             <br>
-            <input type="text" placeholder="<%= data[i]  %>" name="<%= data[i]  %>" required="">
+            <input type="<%= formData.type  %>" placeholder="<%= formData.label  %>" name="<%= data[i]  %>" required="<%= formData.required %>">
             <br>
+            <% } %> 
           <% } %>    
           <button type="submit" class="btn">Submit</button>
           <button type="button" class="btn cancel" >Cancel</button>
