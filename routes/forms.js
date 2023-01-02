@@ -12,15 +12,16 @@ router.get('/form', async (req,res)=>{
         tab : 'Teams',
         title : 'form',
         page : 'New User',
-        required : 'False'
+        required : 'False',
+        table: 'users'
     })
 })
 router.post('/add', async (req,res)=>{
     // var connection = functions.getAccess()
-    var data = await connection.query('SELECT * FROM [users] as u where u.email = ' + JSON.stringify(req.body.email))
+    var data = await connection.query('SELECT * FROM [' + req.body.table + '] as u where u.email = ' + JSON.stringify(req.body.email))
     if(data.length === 1){
         // Update user data based on email address
-        await connection.execute('Update users Set nickname = ' + JSON.stringify(req.body.nickname) + ' Where email = ' + JSON.stringify(req.body.email))
+        await connection.execute('Update ' + req.body.table + ' Set nickname = ' + JSON.stringify(req.body.nickname) + ' Where email = ' + JSON.stringify(req.body.email))
         
         // res.end('User Updated!')
 

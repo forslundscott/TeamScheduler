@@ -5,6 +5,7 @@
 <body>
     <div class="form-popup" id="addItem" style="display: block;">
         <form action="/forms/add" class="form-container" method="POST" autocomplete="off">
+          <input type="hidden" name="table" value="<%= table %>">
           <% for(var i=0; i<data.length; i++) {%>
             <% if(data[i] !== 'id'){ %> 
             <script> 
