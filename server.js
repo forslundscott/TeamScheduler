@@ -9,9 +9,12 @@ app.set('view-engine','ejs')
 
 // Helpers and Routes
 const functions = require('./helpers/functions')
+const nnet = require('./helpers/neuralNet')
 const forms = require('./routes/forms')
 app.use('/forms',forms)
 app.locals.functions = functions
+
+// console.log(nnet.output)
 
 var connection = functions.getAccess()
 

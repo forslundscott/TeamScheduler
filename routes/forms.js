@@ -6,14 +6,14 @@ const router = express.Router()
 
 router.get('/form', async (req,res)=>{
     // var connection = functions.getAccess()
-    var data = Object.keys((await connection.query('SELECT TOP 1 * FROM [users]'))[0])
+    var data = Object.keys((await connection.query('SELECT TOP 1 * FROM [' + req.body.table +']'))[0])
     res.render('index.ejs',{ 
         data : data,
         tab : 'Teams',
         title : 'form',
         page : 'New User',
         required : 'False',
-        table: 'users'
+        table: req.body.table
     })
 })
 router.post('/add', async (req,res)=>{
