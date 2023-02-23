@@ -7,7 +7,7 @@ function newWeight() {
 function newLayerData(inputs){
     var layerData = []
     for(var i = 0; i<inputs; i++){
-        layerData.push(0.1 * newWeight())
+        layerData.push(0.01 * newWeight())
     }
     return layerData
 }
@@ -177,7 +177,7 @@ class categoricalCrossentropy{
     }
     forward(predictions,targets){
         var predictionsClipped = clip(predictions,0.000001,1-0.000001)
-        console.log(predictionsClipped.slice(0,5))
+        // console.log(predictionsClipped.slice(0,5))
         var correct_confidences = []
         for(var i = 0;i<predictionsClipped.length;i++){
             correct_confidences.push(-Math.log(predictionsClipped[i][targets[i]]))
@@ -291,6 +291,22 @@ function linspace(start,stop,number,bias=0){
     }
     return output
 }
+function stndDist1(num){
+    var total = 0
+    for(var i=0;i<num;i++){
+        total += newWeight()
+        // console.log(total/(i+1))
+    }
+    console.log(total/(i+1))
+}
+function stndDist2(num){
+    var total = 0
+    for(var i=0;i<num;i++){
+        
+        total += newWeight()
+        console.log(total/(i+1))
+    }
+}
 // console.log(linspace(1,50,7))
 let [X,y] = spiral_data(100,3)
 
@@ -301,14 +317,14 @@ layer1.forward(X)
 const act1 = layer1.Relu(layer1.outputs)
 const layer2 = new layer(3,3)
 layer2.forward(act1)
-
+stndDist1(100)
 
 // console.log(softMax(layer2.outputs).slice(0,5))
 // console.log(y.slice(0,5))
 // console.log(layer2.outputs.slice(0,5))
 const cost = new categoricalCrossentropy()
 cost.calculate(softMax(layer2.outputs),y)
-console.log(cost.calculate(softMax(layer2.outputs),y))
+// console.log(cost.calculate(softMax(layer2.outputs),y))
 // console.log(softMax(layer2.outputs).length)
 // console.log(y)
 // console.log(tempoutputs)

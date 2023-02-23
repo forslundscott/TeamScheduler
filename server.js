@@ -6,10 +6,15 @@ let options = {}
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public',options))
 app.set('view-engine','ejs')
-
+app.use(logger)
+function logger(req, res, next){
+    console.log('test logger')
+    console.log(req.body)
+    next()
+}
 // Helpers and Routes
 const functions = require('./helpers/functions')
-const nnet = require('./helpers/neuralNet')
+// const nnet = require('./helpers/neuralNet')
 const forms = require('./routes/forms')
 app.use('/forms',forms)
 app.locals.functions = functions

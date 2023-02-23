@@ -1,11 +1,20 @@
 const express = require("express")
-express().use(express.urlencoded({ extended: true }))
+// const app = express()
+const router = express.Router()
+router.use(express.urlencoded({ extended: true }))
 const functions = require('../helpers/functions')
 var connection = functions.getAccess()
-const router = express.Router()
 
+
+// express().use(logger)
+// function logger(req, res, next){
+//     console.log('test form logger')
+//     console.log(req.body)
+//     next()
+// }
 router.get('/form', async (req,res)=>{
     // var connection = functions.getAccess()
+    console.log(req.body)
     var data = Object.keys((await connection.query('SELECT TOP 1 * FROM [' + req.body.table +']'))[0])
     res.render('index.ejs',{ 
         data : data,
